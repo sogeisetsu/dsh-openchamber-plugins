@@ -1,0 +1,34 @@
+{
+  "name": "dsh-sidebar-search",
+  "description": "Standalone sidebar search for DeepSeek Harness: a search button at the sidebar foot opens a quick dialog that finds sessions by message content (extracted from dsh-claude-style).",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "icon": "icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": ["index.js", "client.js", "cordis.patch.yml", "README.md", "locale/*.json", "icon.svg"],
+  "keywords": ["dsh", "deepseek-harness", "dsh-plugin", "sidebar", "search", "web-ui"],
+  "license": "MIT",
+  "dsh": {
+    "engines": { "dsh": ">=0.2.2-rc.1" },
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-workspace"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

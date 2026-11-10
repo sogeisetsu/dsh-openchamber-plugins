@@ -1,0 +1,4 @@
+# Insert this bundle's single Host row: the /summary human command plugin.
+- insert:
+    - id: summary-command
+      name: 'dsh-summary-command'

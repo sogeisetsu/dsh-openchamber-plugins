@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Sidebar search",
+    "description": "Adds a search button beside Settings at the sidebar foot; it opens a quick dialog that finds sessions by message content."
+  }
+}

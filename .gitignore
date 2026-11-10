@@ -1,0 +1,19 @@
+# Reference checkout — not part of this repository.
+# It is a read-only clone of OpenChamber used while porting features.
+openchamber/
+
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Local scratch
+.tmp/
+.dsh-dump.yml
+*.log
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

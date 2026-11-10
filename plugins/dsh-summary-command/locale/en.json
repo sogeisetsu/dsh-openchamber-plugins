@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Session summary command",
+    "description": "Adds a /summary slash command that asks the current session for a non-destructive summary you can hand to a new session."
+  }
+}

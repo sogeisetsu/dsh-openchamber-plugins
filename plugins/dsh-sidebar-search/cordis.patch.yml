@@ -1,0 +1,15 @@
+# Insert this bundle's single row: the sidebar search Client plugin.
+- insert:
+    - id: sidebar-search
+      name: 'dsh-sidebar-search'
+
+# The search dialog reads message content through the Host's session-query
+# index. The web bundle ships it closed (`openAt: never`) so startup stays
+# quiet, and documents this exact override for a deployment that enables
+# content search: open the index lazily on the first search instead.
+# A patch replaces the targeted row's whole `config`, so the web layer's
+# `path` is restated alongside the change.
+- id: session-query-sqlite
+  config:
+    path: ':memory:'
+    openAt: first-search

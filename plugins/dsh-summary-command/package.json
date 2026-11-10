@@ -1,0 +1,26 @@
+{
+  "name": "dsh-summary-command",
+  "description": "Adds a /summary slash command that asks the current session for a non-destructive, hand-off-ready conversation summary (OpenChamber-style magic prompt).",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "icon": "icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": ["index.js", "cordis.patch.yml", "locale/*.json", "icon.svg"],
+  "keywords": ["dsh", "deepseek-harness", "dsh-plugin", "summary", "slash-command", "openchamber"],
+  "license": "MIT",
+  "dsh": {
+    "engines": { "dsh": ">=0.2.2-rc.1" },
+    "bundle": { "patch": "./cordis.patch.yml" }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-commands": ">=0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": ">=0.2.2-rc.1"
+  }
+}
