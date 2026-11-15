@@ -50,6 +50,16 @@ DSH adaptations.
   entries.
 - One Markdown file per idea: `todo/<kebab-case-title>.md`, created from
   [`todo/_TEMPLATE.md`](todo/_TEMPLATE.md).
+- Before adding a file, search the index and the existing idea files (name,
+  front matter, body) for the same or an overlapping idea. The backlog must not
+  contain duplicates:
+  - **Same idea**: update the existing file (scope, status, `last_reviewed`,
+    `related`, and a dated `实现记录` line) instead of creating a new one;
+  - **Related but distinct**: create a new file, link both files through
+    `related`, and state the relationship at the top of the new body;
+  - **Existing idea gains a new facet**: extend that file with a new section and
+    record the change in `实现记录`;
+  - Whatever the case, update the README index in the same change.
 - [`todo/README.md`](todo/README.md) is the index and status dashboard. For
   every file it states what the file is for, its status, whether it is stale,
   and whether the idea is being implemented. Update it whenever an idea file is
