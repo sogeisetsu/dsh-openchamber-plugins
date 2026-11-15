@@ -16,6 +16,7 @@ into a plugin.
 ## Layout
 
 ```
+todo/                   # idea backlog; one Markdown file per idea, README.md is the index
 plugins/
   dsh-sidebar-search/   # sidebar search trigger + command palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
@@ -26,6 +27,27 @@ AGENTS.md
 Each plugin directory is a self-contained DSH bundle: `package.json` declaring
 `dsh.bundle.patch` (and `dsh.client` when it renders UI), `cordis.patch.yml`,
 locale files, icon, and its implementation files.
+
+## todo/ — idea backlog
+
+`todo/` records ideas and things we want to do. It is not implementation code.
+
+- Everything under `todo/` — this README, the template, and every idea file — is
+  written in Simplified Chinese. Keep that language when adding or editing
+  entries.
+- One Markdown file per idea: `todo/<kebab-case-title>.md`, created from
+  [`todo/_TEMPLATE.md`](todo/_TEMPLATE.md).
+- [`todo/README.md`](todo/README.md) is the index and status dashboard. For
+  every file it states what the file is for, its status, whether it is stale,
+  and whether the idea is being implemented. Update it whenever an idea file is
+  added, removed, re-scoped, or changes status.
+- Status and staleness rules live in `todo/README.md`; follow them instead of
+  inventing a new scheme.
+- An idea counts as "being implemented" only when it links the plugin, branch,
+  or PR where the work happens.
+- Keep the folder tracked by Git. Never add `todo/` to `.gitignore`.
+- Capture an idea in `todo/` only when asked. A recorded idea is not approval to
+  implement it.
 
 ## Install model — development vs release
 
@@ -92,7 +114,8 @@ Start from the DSH-generated docs and inspection, never from guesswork:
 
 ## Conventions
 
-- Code, comments, and repository docs in English. User-visible UI strings are
+- Code, comments, and repository docs in English, except the `todo/` idea
+  backlog, which is written in Simplified Chinese. User-visible UI strings are
   localized (`zh` + `en`); keep both dictionaries complete.
 - One plugin per feature. Plugins are independent bundles and must not import
   each other.

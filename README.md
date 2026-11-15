@@ -39,6 +39,7 @@ Two behaviours worth knowing:
 ## Layout
 
 ```
+todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
