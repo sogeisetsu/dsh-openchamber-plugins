@@ -51,8 +51,24 @@ front matter 和表格中使用以下状态：
 | 文件 | 用途 | 状态 | 是否过时 | 是否在实现 |
 | --- | --- | --- | --- | --- |
 | [`_TEMPLATE.md`](_TEMPLATE.md) | 新想法文件的复制模板。 | `template` | 不适用 | 不适用 |
+| [`behavior-settings-global-agents-md.md`](behavior-settings-global-agents-md.md) | 在 Settings 里加「行为」分区：编辑全局 AGENTS.md（带 Markdown 预览小眼睛）并设置回复风格预设。 | `backlog` | 否 | 否 |
+| [`collapse-long-user-messages.md`](collapse-long-user-messages.md) | 折叠超长的用户消息气泡，展开/收起按钮复刻 OpenChamber 的 Show more / Show less。 | `backlog` | 否 | 否 |
+| [`btw-side-question.md`](btw-side-question.md) | 复刻 OpenChamber 的 `/btw` 侧问：fork 临时会话答题，composer 上方流式面板，可收起/保留/丢弃。 | `backlog` | 否 | 否 |
+| [`session-delete-cascade-cleanup.md`](session-delete-cascade-cleanup.md) | 先行为不变地简化 `dsh-session-delete-cascade`，再加「删会话时按引用清理图片」能力。 | `backlog` | 否 | 否 |
+| [`prompt-enhance-button.md`](prompt-enhance-button.md) | 从 `dsh-agent-enhancer` 提取提示词优化：输入框小星星按钮，一键增强草稿并可撤销。 | `backlog` | 否 | 否 |
+| [`session-notifications.md`](session-notifications.md) | 类似 OpenChamber 的会话系统通知：完成/出错/提问/待批准时提醒，点击跳转会话，可配模板。 | `backlog` | 否 | 否 |
+| [`large-text-paste-to-file.md`](large-text-paste-to-file.md) | 粘贴大段文字时按设置自动/询问转成 `.txt` 文件附件，保持输入框整洁。 | `backlog` | 否 | 否 |
+| [`simplify-skill.md`](simplify-skill.md) | 移植 OMO Slim 的 simplify 技能：行为等价地简化代码，DSH 用户级 SKILL.md。 | `backlog` | 否 | 否 |
+| [`catch-up-skill.md`](catch-up-skill.md) | 移植 OpenChamber 的 `/catch-up`：查 git 状态 + 会话历史，快速说清「项目现在到哪了」。 | `backlog` | 否 | 否 |
+| [`in-conversation-find.md`](in-conversation-find.md) | Ctrl+F 搜索当前会话并跳转到命中消息，复刻 OpenChamber 的会话内搜索。 | `backlog` | 否 | 否 |
+| [`table-copy-button.md`](table-copy-button.md) | 给对话里的 Markdown 表格加复制按钮，只复制这张表格（默认 Markdown）。 | `backlog` | 否 | 否 |
+| [`handoff-review-shuttle.md`](handoff-review-shuttle.md) | 自动往返评审插件方案：`/handoff-review` 启动实现会话 ↔ 评审会话 shuttle，多轮直到通过/轮次上限。 | `backlog` | 否 | 否 |
+| [`reflect-skill.md`](reflect-skill.md) | OMO Slim 的 reflect 技能：复盘→最小可复用改进，DSH 化后归档（含会话 miner 与作用域门槛）。 | `done` | 否 | 已交付 |
+| [`grilling-skill.md`](grilling-skill.md) | Matt Pocock 的 grilling 技能：设计树式追问评审，逐字移植归档。 | `done` | 否 | 已交付 |
+| [`install-review-skill.md`](install-review-skill.md) | 合并 skill-vetter 与自建插件审查的安装前审查技能（PASS/WARN/BLOCK，含离线扫描脚本）。 | `done` | 否 | 已交付 |
+| [`summary-command-plugin.md`](summary-command-plugin.md) | OpenChamber `/summary` 移植为 DSH 原生斜杠命令插件（`dsh-summary-command`）。 | `done` | 否 | 已交付（link 安装，打包安装待补） |
 
-目前还没有记录任何想法。开始记录时：
+新增想法时：
 
 1. 把 `_TEMPLATE.md` 复制为 `<kebab-case-title>.md`。
 2. 填写 front matter 和正文。

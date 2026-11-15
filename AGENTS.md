@@ -5,9 +5,10 @@ Guidance for AI agents (and humans) working in this repository.
 ## What this repository is
 
 It ports useful features from **OpenChamber** (a desktop/web workspace for
-OpenCode) into **DeepSeek Harness (DSH)** as persistent plugins, one independent
-bundle per feature. This repository is not affiliated with OpenChamber or
-DeepSeek.
+OpenCode), plus selected user-level skills from other agent ecosystems, into
+**DeepSeek Harness (DSH)** as persistent plugins, one independent bundle per
+feature, and reusable skills under `skills/`. This repository is not affiliated
+with OpenChamber or DeepSeek.
 
 `openchamber/` is a read-only reference checkout used while porting. It is
 git-ignored: never commit it, never modify it, and never copy its build output
@@ -20,6 +21,10 @@ todo/                   # idea backlog; one Markdown file per idea, README.md is
 plugins/
   dsh-sidebar-search/   # sidebar search trigger + command palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
+skills/
+  reflect/              # user-level DSH skill: review repeated work → smallest reusable asset
+  grilling/             # user-level DSH skill: design-tree interview for plans/decisions
+  install-review/       # user-level DSH skill: pre-install review (skill / plugin / npm / tarball)
 README.md
 AGENTS.md
 ```
@@ -27,6 +32,14 @@ AGENTS.md
 Each plugin directory is a self-contained DSH bundle: `package.json` declaring
 `dsh.bundle.patch` (and `dsh.client` when it renders UI), `cordis.patch.yml`,
 locale files, icon, and its implementation files.
+
+Each skill directory is a user-level DSH skill bundle: a `SKILL.md` with YAML
+frontmatter (`name` + `description` are required) plus an optional
+zero-dependency `scripts/` directory. Installing a skill means copying its
+directory into `<dshHome>/skills/` (default `~/.dsh/skills/`, rank 400 in DSH's
+skill discovery); skills are not packed, installed through `plugin_manager`, or
+linked like plugins. [`skills/README.md`](skills/README.md) lists provenance and
+DSH adaptations.
 
 ## todo/ — idea backlog
 
