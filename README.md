@@ -26,6 +26,11 @@ a `SKILL.md` bundle (plus zero-dependency node scripts where needed). Copy a
 directory into `<dshHome>/skills/` to install it; DSH discovers the change
 without a restart.
 
+Project-level skills live under [`.dsh/skills/`](.dsh/skills/): they are
+committed with the repository and discovered at rank 100, so they need no
+install step. [`zh-doc-sync`](.dsh/skills/zh-doc-sync) keeps the Chinese docs in
+`ZH/` aligned with their English sources.
+
 | Skill | What it does | Origin |
 | --- | --- | --- |
 | [`reflect`](skills/reflect) | Reviews recent work, finds repeated friction, and proposes the smallest reusable asset — an `AGENTS.md` rule, a skill, a plugin setting, a scheduled task, or nothing. | OMO Slim `reflect`, DSH-adapted |
@@ -57,6 +62,8 @@ Two behaviours worth knowing:
 ## Layout
 
 ```
+.dsh/skills/
+  zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)

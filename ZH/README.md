@@ -25,6 +25,10 @@
 （需要时带零依赖的 Node 脚本）。把目录复制到 `<dshHome>/skills/` 即可安装；
 DSH 会自动发现变化，无需重启。
 
+项目级技能放在 [`.dsh/skills/`](../.dsh/skills/)：随仓库一起提交，在 rank 100
+被发现，因此不需要安装步骤。[`zh-doc-sync`](../.dsh/skills/zh-doc-sync) 负责让
+`ZH/` 里的中文文档与英文源保持一致。
+
 | 技能 | 功能 | 来源 |
 | --- | --- | --- |
 | [`reflect`](../skills/reflect) | 复盘最近的工作，找出重复摩擦，提出最小可复用资产 —— 一条 `AGENTS.md` 规则、一个技能、一个插件设置、一个定时任务，或者什么都不做。 | OMO Slim 的 `reflect`，已做 DSH 适配 |
@@ -53,6 +57,8 @@ tarball。
 ## 目录结构
 
 ```
+.dsh/skills/
+  zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)
