@@ -17,6 +17,8 @@ into a plugin.
 ## Layout
 
 ```
+.dsh/skills/
+  zh-doc-sync/          # project-level skill: keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; one Markdown file per idea, README.md is the index
 plugins/
   dsh-sidebar-search/   # sidebar search trigger + command palette (client half, host stub)
@@ -25,6 +27,7 @@ skills/
   reflect/              # user-level DSH skill: review repeated work → smallest reusable asset
   grilling/             # user-level DSH skill: design-tree interview for plans/decisions
   install-review/       # user-level DSH skill: pre-install review (skill / plugin / npm / tarball)
+ZH/                     # Chinese docs: README.md is committed; AGENTS.md is local-only (git-ignored)
 README.md
 AGENTS.md
 ```
@@ -33,13 +36,16 @@ Each plugin directory is a self-contained DSH bundle: `package.json` declaring
 `dsh.bundle.patch` (and `dsh.client` when it renders UI), `cordis.patch.yml`,
 locale files, icon, and its implementation files.
 
-Each skill directory is a user-level DSH skill bundle: a `SKILL.md` with YAML
-frontmatter (`name` + `description` are required) plus an optional
-zero-dependency `scripts/` directory. Installing a skill means copying its
-directory into `<dshHome>/skills/` (default `~/.dsh/skills/`, rank 400 in DSH's
-skill discovery); skills are not packed, installed through `plugin_manager`, or
-linked like plugins. [`skills/README.md`](skills/README.md) lists provenance and
-DSH adaptations.
+**Project-level skills** live in `.dsh/skills/` (rank 100 in DSH skill
+discovery) and are committed with the repository.
+
+**User-level skills** live in `skills/`: a `SKILL.md` with YAML frontmatter
+(`name` + `description` are required) plus an optional zero-dependency
+`scripts/` directory. Installing one means copying its directory into
+`<dshHome>/skills/` (default `~/.dsh/skills/`, rank 400 in DSH's skill
+discovery); user-level skills are not packed, installed through
+`plugin_manager`, or linked like plugins. [`skills/README.md`](skills/README.md)
+lists provenance and DSH adaptations.
 
 ## todo/ — idea backlog
 
@@ -50,6 +56,22 @@ DSH adaptations.
   entries.
 - One Markdown file per idea: `todo/<kebab-case-title>.md`, created from
   [`todo/_TEMPLATE.md`](todo/_TEMPLATE.md).
+- Before adding a file, search the index and the existing idea files (name,
+  front matter, body) for the same or an overlapping idea. The backlog must not
+  contain duplicates:
+  - **Same idea**: update the existing file (scope, status, `last_reviewed`,
+    `related`, and a dated `实现记录` line) instead of creating a new one;
+  - **Related but distinct**: create a new file, link both files through
+    `related`, and state the relationship at the top of the new body;
+  - **Existing idea gains a new facet**: extend that file with a new section and
+    record the change in `实现记录`;
+  - Whatever the case, update the README index in the same change.
+- Idea files stay portable: write host paths with placeholders — `<repo>/...`,
+  `~/.dsh/...`, `<dshHome>`, `<profile>/node_modules/...`, `<DSH install>/...` —
+  never a machine-specific absolute path (`C:\Users\<name>\...`, `E:\...`).
+  `openchamber/...` is the reference checkout's repo-relative path and is
+  allowed. The Safety section's commit rule is the backstop; write the portable
+  form in the first place.
 - [`todo/README.md`](todo/README.md) is the index and status dashboard. For
   every file it states what the file is for, its status, whether it is stale,
   and whether the idea is being implemented. Update it whenever an idea file is
@@ -89,12 +111,59 @@ Rules that follow from this:
 4. Keep the development link while iterating — it is the fastest loop — but
    treat the release install as part of "done".
 
+## Development workflow
+
+Never work directly on `main`. Every task starts from a branch of the current
+`main`, and every finished slice is a commit on that branch:
+
+1. Create a branch: `git switch -c <type>/<slug>` (`feature/`, `fix/`, or
+   `docs/`), from an up-to-date `main`.
+2. Make one logical change at a time and commit it as soon as it is coherent.
+   Use `<type>(<scope>): <summary>` messages.
+3. Stage explicit paths (`git add <path>`). Never use `git add -A` or
+   `git add .` while unrelated worktree changes exist; leave other people's
+   uncommitted changes untouched.
+4. Run the checks that belong to the slice before committing (syntax for code,
+   `node --check`, JSON/table/link checks for docs).
+5. When the task is complete, switch to `main`, merge the branch with
+   `git merge --no-ff <branch>`, push `main` (`git push origin main`), and
+   delete the local branch. For this repository, pushing `main` is the deploy;
+   plugin release installation still follows *Install model*.
+6. Do not commit or push unless the task asked for it. Never run
+   `git reset --hard`, `git clean -fd`, or force-push.
+
+## Chinese documentation
+
+English `README.md` and `AGENTS.md` are the source of truth. Their Chinese
+translations live in `ZH/`:
+
+| Source | Translation | Tracking |
+| --- | --- | --- |
+| `README.md` | `ZH/README.md` | committed |
+| `AGENTS.md` | `ZH/AGENTS.md` | local only, git-ignored |
+
+- Whenever an English file changes, update its Chinese counterpart in the same
+  change. Use the project skill `.dsh/skills/zh-doc-sync` (or do it by hand) and
+  run `node .dsh/skills/zh-doc-sync/scripts/check-sync.mjs`.
+- Keep the structure identical: same heading levels and order, fenced code
+  blocks (language and content), table column counts, and link targets
+  (normalize the `../` prefix used from `ZH/`). Translate prose only — never
+  code, commands, paths, URLs, identifiers, or front matter keys.
+- `ZH/AGENTS.md` is ignored by design: it is a personal local translation, not
+  distributed. The sync skill recreates it from English when it is missing.
+
 ## Developing a plugin
 
 Start from the DSH-generated docs and inspection, never from guesswork:
 
 - Query the live Harness before writing code: `cordis_inspect_query` for Client
   `Slots`/`Service`, Host `Service`/`Config`/`Event`, and `Theme` tokens.
+- When the question is about DSH internals (packaged code, session archives),
+  use the bundled `dsh-forensics` skill's parsers when it is available
+  (`asar.mjs` reads the single-file `app.asar`; `sessions.mjs` decodes the
+  multi-frame `session.v4.jsonl.zstd`) instead of writing ad-hoc extractors.
+  Throwaway scripts go in `%TEMP%` or `.tmp/` (git-ignored) and are never
+  committed.
 - Do not import Harness client packages from a plugin. Copy the pattern you need
   and keep only `--dsw-alias-*` theme tokens as a styling dependency.
 - Client half: `window.__ModuleLoader__.load({ id, factory })`, register through
@@ -128,8 +197,9 @@ Start from the DSH-generated docs and inspection, never from guesswork:
 ## Conventions
 
 - Code, comments, and repository docs in English, except the `todo/` idea
-  backlog, which is written in Simplified Chinese. User-visible UI strings are
-  localized (`zh` + `en`); keep both dictionaries complete.
+  backlog (Simplified Chinese) and the `ZH/` translations. User-visible UI
+  strings are localized (`zh` + `en`); keep both dictionaries complete, and keep
+  every Chinese translation in sync with its English source.
 - One plugin per feature. Plugins are independent bundles and must not import
   each other.
 - Bump the plugin's `version` for any user-visible change, and update its

@@ -2,7 +2,7 @@
 title: 粘贴大段文字自动转成文件附件
 status: backlog
 created: 2026-11-15
-last_reviewed: 2026-11-15
+last_reviewed: 2026-11-16
 owner: 我
 related: []
 ---
@@ -85,3 +85,6 @@ related: []
 ## 实现记录
 
 - 2026-11-15 —— 创建。
+- 2026-11-16 —— 复核：本条已覆盖「大段文本粘贴处理」需求（阈值、四种行为、
+  文件协议、OpenChamber 参考都在这），无需再建重复条目；按新加的查重规则
+  只更新 `last_reviewed`。

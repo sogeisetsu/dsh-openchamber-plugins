@@ -8,6 +8,10 @@ get the conveniences DSH does not ship.
 
 Nothing here is stable yet. APIs, layouts, and plugin names may change.
 
+Chinese docs: [ZH/README.md](ZH/README.md) — the Chinese translation of this
+file. The Chinese `AGENTS.md` (`ZH/AGENTS.md`) is maintained locally and is not
+committed.
+
 ## Plugins
 
 | Plugin | What it does | Status |
@@ -21,6 +25,11 @@ User-level skills live under [`skills/`](skills/): one directory per skill, each
 a `SKILL.md` bundle (plus zero-dependency node scripts where needed). Copy a
 directory into `<dshHome>/skills/` to install it; DSH discovers the change
 without a restart.
+
+Project-level skills live under [`.dsh/skills/`](.dsh/skills/): they are
+committed with the repository and discovered at rank 100, so they need no
+install step. [`zh-doc-sync`](.dsh/skills/zh-doc-sync) keeps the Chinese docs in
+`ZH/` aligned with their English sources.
 
 | Skill | What it does | Origin |
 | --- | --- | --- |
@@ -53,6 +62,8 @@ Two behaviours worth knowing:
 ## Layout
 
 ```
+.dsh/skills/
+  zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)
@@ -61,6 +72,7 @@ skills/
   reflect/              # review repeated work → smallest reusable asset
   grilling/             # design-tree interview for plans and decisions
   install-review/       # pre-install review of skills, plugins, npm packages
+ZH/                     # Chinese docs; README.md is committed, AGENTS.md is local-only
 ```
 
 `openchamber/` is a read-only reference clone used while porting. It is

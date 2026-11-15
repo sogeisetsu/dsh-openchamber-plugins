@@ -65,6 +65,10 @@ front matter 和表格中使用以下状态：
 | [`handoff-review-shuttle.md`](handoff-review-shuttle.md) | 自动往返评审插件方案：`/handoff-review` 启动实现会话 ↔ 评审会话 shuttle，多轮直到通过/轮次上限。 | `backlog` | 否 | 否 |
 | [`init-command.md`](init-command.md) | 实现 OpenCode 的 `/init`：扫描仓库并创建/更新项目 AGENTS.md（首选用户级技能）。 | `backlog` | 否 | 否 |
 | [`ai-rename-session.md`](ai-rename-session.md) | 会话侧栏菜单「AI 重命名」：按最近几轮对话生成标题并重命名，带 pending/失败提示。 | `backlog` | 否 | 否 |
+| [`prompt-history.md`](prompt-history.md) | 输入框 ↑↓ 回溯历史 + 可搜索历史面板（参考 OpenChamber / dsh-agent-enhancer）。 | `backlog` | 否 | 否 |
+| [`mcp-management-page.md`](mcp-management-page.md) | 设置里的 MCP 服务器管理页：增删/启停/状态，含三条落地路线与安全边界。 | `backlog` | 否 | 否 |
+| [`verification-planning-skill.md`](verification-planning-skill.md) | OMO Slim 的 verification-planning 技能移植：先设计证据路径再实现（用户级 SKILL.md）。 | `backlog` | 否 | 否 |
+| [`deepwork-workflow.md`](deepwork-workflow.md) | deepwork 原则移植：分 pass 推进，适配 DSH 的 Goal/Plan/Subagent/Team，不搬 OMO 7 agent 文本。 | `backlog` | 否 | 否 |
 | [`reflect-skill.md`](reflect-skill.md) | OMO Slim 的 reflect 技能：复盘→最小可复用改进，DSH 化后归档（含会话 miner 与作用域门槛）。 | `done` | 否 | 已交付 |
 | [`grilling-skill.md`](grilling-skill.md) | Matt Pocock 的 grilling 技能：设计树式追问评审，逐字移植归档。 | `done` | 否 | 已交付 |
 | [`install-review-skill.md`](install-review-skill.md) | 合并 skill-vetter 与自建插件审查的安装前审查技能（PASS/WARN/BLOCK，含离线扫描脚本）。 | `done` | 否 | 已交付 |
@@ -72,10 +76,12 @@ front matter 和表格中使用以下状态：
 
 新增想法时：
 
-1. 把 `_TEMPLATE.md` 复制为 `<kebab-case-title>.md`。
-2. 填写 front matter 和正文。
-3. 在上表新增一行。
-4. 把新文件和本 README 一起提交。
+1. **先查重**：搜本目录的文件名、front matter、正文和上表。同一个想法就更新
+   原文件，不要新建；相关但不同的想法新建，并在两边的 `related` 里互相链接。
+2. 把 `_TEMPLATE.md` 复制为 `<kebab-case-title>.md`。
+3. 填写 front matter 和正文。
+4. 在上表新增一行。
+5. 把新文件和本 README 一起提交。
 
 ## Front matter
 
