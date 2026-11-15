@@ -12,6 +12,9 @@ dist/
 .dsh-dump.yml
 *.log
 
+# Local-only Chinese translation of AGENTS.md (ZH/README.md is tracked)
+ZH/AGENTS.md
+
 # Editor / OS noise
 .DS_Store
 Thumbs.db
