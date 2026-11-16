@@ -8,9 +8,9 @@ get the conveniences DSH does not ship.
 
 Nothing here is stable yet. APIs, layouts, and plugin names may change.
 
-Chinese docs: [ZH/README.md](ZH/README.md) — the Chinese translation of this
-file. The Chinese `AGENTS.md` (`ZH/AGENTS.md`) is maintained locally and is not
-committed.
+Chinese docs: [ZH/README-zh.md](ZH/README-zh.md) — the Chinese translation of
+this file. The Chinese `AGENTS.md` (`ZH/AGENTS-zh.md`) is maintained locally and
+is not committed.
 
 ## Plugins
 
@@ -76,7 +76,7 @@ skills/
   grilling/             # design-tree interview for plans and decisions
   install-review/       # pre-install review of skills, plugins, npm packages
   init/                 # initialize project AGENTS.md (/init)
-ZH/                     # Chinese docs; README.md is committed, AGENTS.md is local-only
+ZH/                     # Chinese docs; README-zh.md is committed, AGENTS-zh.md is local-only
 ```
 
 `openchamber/` is a read-only reference clone used while porting. It is

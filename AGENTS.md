@@ -28,7 +28,7 @@ skills/
   grilling/             # user-level DSH skill: design-tree interview for plans/decisions
   install-review/       # user-level DSH skill: pre-install review (skill / plugin / npm / tarball)
   init/                 # user-level DSH skill: /init → project AGENTS.md
-ZH/                     # Chinese docs: README.md is committed; AGENTS.md is local-only (git-ignored)
+ZH/                     # Chinese docs: README-zh.md is committed; AGENTS-zh.md is local-only (git-ignored)
 README.md
 AGENTS.md
 ```
@@ -94,7 +94,7 @@ There are two different installation shapes, and they must not be confused:
 | | Development (while building) | Release / hand-off (when done) |
 | --- | --- | --- |
 | How | `install_bundle` with the plugin **directory** | `pnpm pack` inside the plugin directory, then `install_bundle` with the **tarball** (or a registry spec after publishing) |
-| What the profile records | a `link:<absolute path>` dependency plus a directory junction in the profile's `node_modules` | a normal versioned dependency; a real extracted package |
+| What the profile records | a `link:<absolute path>` dependency plus a directory junction in the profile's `node_modules` | a versioned registry dependency, or a `file:` tarball before publishing; a real extracted package |
 | Edit → effect | live: the profile reads the workspace file itself (client: reload the page; host: restart DSH) | none: the installed copy is independent of the working tree |
 | Acceptable for a finished feature? | **No** | **Yes** |
 
@@ -103,14 +103,37 @@ Rules that follow from this:
 1. A feature is not "done" while it is installed by link. Before reporting a
    feature complete, reinstall it as a packed artifact and exercise it again.
 2. Verify the release install really is a real install: the profile
-   `package.json` entry must show a version (not `link:`), and the profile
-   `node_modules/<plugin>` entry must be a real directory (PowerShell
-   `LinkType` empty), not a junction.
+   `package.json` entry must show a version or a `file:` tarball spec (never
+   `link:`), and the profile `node_modules/<plugin>` entry must be a real
+   directory (PowerShell `LinkType` empty), not a junction.
 3. Why: a link depends on an absolute path on one machine. Move or delete the
    working tree and the installed plugin breaks; nobody consuming the package
    can reproduce the result.
 4. Keep the development link while iterating — it is the fastest loop — but
    treat the release install as part of "done".
+
+### Replacing a development link with a packed install
+
+A tarball install over an existing link does not replace the junction by
+itself: the profile `package.json` changes to `file:<tarball>`, pnpm prints
+`Already up to date`, and `node_modules/<plugin>` still points at the working
+tree. `application: applied` alone therefore does not prove the packed install
+happened.
+
+1. `plugin_manager` `remove_bundle` for the plugin.
+2. Read the leftover `node_modules/<plugin>` entry. A removed bundle can leave
+   it in place; when its `LinkType` is a junction, or the directory is a stale
+   copy, delete that exact path after confirming it resolves to the profile's
+   `node_modules` entry.
+3. `install_bundle` with the tarball.
+4. Verify all three: the dependency is a versioned registry spec or a `file:`
+   tarball (never `link:`), the installed entry is a real directory
+   (`LinkType` empty), and the Client or Host registration is still live.
+5. Keep the tarball. Every later profile install re-reads that exact `file:`
+   path, so deleting it makes the next install fail with `ENOENT` — restore it
+   at the same path, or drop the dependency with `remove_bundle` before
+   installing anything else. `.tmp/packs/` is the repository's git-ignored home
+   for these artifacts.
 
 ## Development workflow
 
@@ -140,8 +163,8 @@ translations live in `ZH/`:
 
 | Source | Translation | Tracking |
 | --- | --- | --- |
-| `README.md` | `ZH/README.md` | committed |
-| `AGENTS.md` | `ZH/AGENTS.md` | local only, git-ignored |
+| `README.md` | `ZH/README-zh.md` | committed |
+| `AGENTS.md` | `ZH/AGENTS-zh.md` | local only, git-ignored |
 
 - Whenever an English file changes, update its Chinese counterpart in the same
   change. Use the project skill `.dsh/skills/zh-doc-sync` (or do it by hand) and
@@ -150,8 +173,8 @@ translations live in `ZH/`:
   blocks (language and content), table column counts, and link targets
   (normalize the `../` prefix used from `ZH/`). Translate prose only — never
   code, commands, paths, URLs, identifiers, or front matter keys.
-- `ZH/AGENTS.md` is ignored by design: it is a personal local translation, not
-  distributed. The sync skill recreates it from English when it is missing.
+- `ZH/AGENTS-zh.md` is ignored by design: it is a personal local translation,
+  not distributed. The sync skill recreates it from English when it is missing.
 
 ## Developing a plugin
 

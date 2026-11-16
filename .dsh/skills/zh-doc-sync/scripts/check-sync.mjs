@@ -22,8 +22,8 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const defaultRoot = resolve(scriptDir, '..', '..', '..', '..');
 
 const PAIRS = [
-  { name: 'README', source: 'README.md', translation: 'ZH/README.md' },
-  { name: 'AGENTS', source: 'AGENTS.md', translation: 'ZH/AGENTS.md' },
+  { name: 'README', source: 'README.md', translation: 'ZH/README-zh.md' },
+  { name: 'AGENTS', source: 'AGENTS.md', translation: 'ZH/AGENTS-zh.md' },
 ];
 
 function parseArgs(argv) {
@@ -77,8 +77,8 @@ function normalizeTarget(raw) {
   while (target.startsWith('../')) target = target.slice(3);
   while (target.startsWith('./')) target = target.slice(2);
   target = target.replace(/\/+$/, '');
-  if (/^(?:ZH\/)?README\.md$/i.test(target)) target = 'README.md';
-  if (/^(?:ZH\/)?AGENTS\.md$/i.test(target)) target = 'AGENTS.md';
+  if (/^(?:ZH\/)?README(?:-zh)?\.md$/i.test(target)) target = 'README.md';
+  if (/^(?:ZH\/)?AGENTS(?:-zh)?\.md$/i.test(target)) target = 'AGENTS.md';
   return target;
 }
 
@@ -228,7 +228,7 @@ function checkPair(root, pair, strict) {
     return result;
   }
   if (translation.missing) {
-    result.issues.push(`missing translation: ${pair.translation}${pair.translation.endsWith('AGENTS.md') ? ' (local-only; translate AGENTS.md and keep it git-ignored)' : ''}`);
+    result.issues.push(`missing translation: ${pair.translation}${pair.name === 'AGENTS' ? ' (local-only; translate AGENTS.md and keep it git-ignored)' : ''}`);
     return result;
   }
 
