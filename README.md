@@ -16,6 +16,7 @@ committed.
 
 | Plugin | What it does | Status |
 | --- | --- | --- |
+| [`dsh-files-show-hidden`](plugins/dsh-files-show-hidden) | Adds an eye toggle to the right Sidebar's files page header. It shows or hides dotfiles and dot-directories by invoking the file browser's own hidden-entry setting, so the browser keeps ownership of the preference. | delivered — packed install |
 | [`dsh-sidebar-search`](plugins/dsh-sidebar-search) | Adds a search button beside Settings at the sidebar foot. The palette searches session message content, session titles, and projects, and offers quick actions (new session, settings, plugins). | in development |
 | [`dsh-summary-command`](plugins/dsh-summary-command) | Adds a `/summary [topic]` slash command that asks the current session for a non-destructive, hand-off-ready summary. Prompt text ported from OpenChamber's `/summary` magic prompt. | delivered — dev-linked install; packed install pending |
 
@@ -67,6 +68,7 @@ Two behaviours worth knowing:
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
 plugins/
+  dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
 skills/
