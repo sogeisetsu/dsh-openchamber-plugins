@@ -34,6 +34,7 @@ DSH 会自动发现变化，无需重启。
 | [`reflect`](../skills/reflect) | 复盘最近的工作，找出重复摩擦，提出最小可复用资产 —— 一条 `AGENTS.md` 规则、一个技能、一个插件设置、一个定时任务，或者什么都不做。 | OMO Slim 的 `reflect`，已做 DSH 适配 |
 | [`grilling`](../skills/grilling) | 用设计树式追问压力测试一个计划或决定：frontier 轮次、`❓ / ➡️` 格式，事实由子代理去查。 | Matt Pocock 的 `grilling`，近乎逐字移植 |
 | [`install-review`](../skills/install-review) | 安装前只读审查技能、DSH 插件、npm 包、tarball 或 GitHub 仓库，最终给出 `PASS` / `WARN` / `BLOCK`。 | `skill-vetter`（A 轨）与自建插件审查（B 轨）合并 |
+| [`init`](../skills/init) | 扫描仓库，用已核实的命令、架构与约定创建或改进项目根目录的 `AGENTS.md`；不碰全局指令文件。 | OpenCode `/init` 行为，DSH 原生实现 |
 
 ## 安装
 
@@ -67,6 +68,7 @@ skills/
   reflect/              # review repeated work → smallest reusable asset
   grilling/             # design-tree interview for plans and decisions
   install-review/       # pre-install review of skills, plugins, npm packages
+  init/                 # initialize project AGENTS.md (/init)
 ZH/                     # Chinese docs; README.md is committed, AGENTS.md is local-only
 ```
 
@@ -80,6 +82,7 @@ ZH/                     # Chinese docs; README.md is committed, AGENTS.md is loc
 - `reflect` 改编自 [OMO Slim](https://github.com/alvinunreal/oh-my-opencode-slim)，MIT 许可。
 - `install-review` 合并了第三方 `skill-vetter` 技能与自建的插件审查流程；来源与
   许可说明见 [`skills/README.md`](../skills/README.md)。
+- `init` 移植了 OpenCode `/init` 命令的行为（[Rules → Initialize](https://opencode.ai/docs/rules#initialize)），MIT 许可；未复制上游提示词文本。
 - 搜索行为与命令面板形态参考了 dsh-claude-style 的侧栏搜索和 OpenChamber 的搜索
   界面。
 

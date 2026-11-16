@@ -63,7 +63,7 @@ front matter 和表格中使用以下状态：
 | [`in-conversation-find.md`](in-conversation-find.md) | Ctrl+F 搜索当前会话并跳转到命中消息，复刻 OpenChamber 的会话内搜索。 | `backlog` | 否 | 否 |
 | [`table-copy-button.md`](table-copy-button.md) | 给对话里的 Markdown 表格加复制按钮，只复制这张表格（默认 Markdown）。 | `backlog` | 否 | 否 |
 | [`handoff-review-shuttle.md`](handoff-review-shuttle.md) | 自动往返评审插件方案：`/handoff-review` 启动实现会话 ↔ 评审会话 shuttle，多轮直到通过/轮次上限。 | `backlog` | 否 | 否 |
-| [`init-command.md`](init-command.md) | 实现 OpenCode 的 `/init`：扫描仓库并创建/更新项目 AGENTS.md（首选用户级技能）。 | `backlog` | 否 | 否 |
+| [`init-command.md`](init-command.md) | 实现 OpenCode 的 `/init`：扫描仓库并创建/更新项目 AGENTS.md（已交付为用户级技能 `skills/init/`）。 | `done` | 否 | 已交付 |
 | [`ai-rename-session.md`](ai-rename-session.md) | 会话侧栏菜单「AI 重命名」：按最近几轮对话生成标题并重命名，带 pending/失败提示。 | `backlog` | 否 | 否 |
 | [`prompt-history.md`](prompt-history.md) | 输入框 ↑↓ 回溯历史 + 可搜索历史面板（参考 OpenChamber / dsh-agent-enhancer）。 | `backlog` | 否 | 否 |
 | [`mcp-management-page.md`](mcp-management-page.md) | 设置里的 MCP 服务器管理页：增删/启停/状态，含三条落地路线与安全边界。 | `backlog` | 否 | 否 |

@@ -27,6 +27,7 @@ skills/
   reflect/              # user-level DSH skill: review repeated work → smallest reusable asset
   grilling/             # user-level DSH skill: design-tree interview for plans/decisions
   install-review/       # user-level DSH skill: pre-install review (skill / plugin / npm / tarball)
+  init/                 # user-level DSH skill: /init → project AGENTS.md
 ZH/                     # Chinese docs: README.md is committed; AGENTS.md is local-only (git-ignored)
 README.md
 AGENTS.md
