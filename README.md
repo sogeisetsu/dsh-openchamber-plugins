@@ -36,6 +36,7 @@ install step. [`zh-doc-sync`](.dsh/skills/zh-doc-sync) keeps the Chinese docs in
 | [`reflect`](skills/reflect) | Reviews recent work, finds repeated friction, and proposes the smallest reusable asset — an `AGENTS.md` rule, a skill, a plugin setting, a scheduled task, or nothing. | OMO Slim `reflect`, DSH-adapted |
 | [`grilling`](skills/grilling) | Stress-tests a plan or decision with a design-tree interview: frontier rounds, `❓ / ➡️` format, facts looked up by a subagent. | Matt Pocock's `grilling`, near-verbatim |
 | [`install-review`](skills/install-review) | Read-only pre-install review of a skill, DSH plugin, npm package, tarball or GitHub repo, ending in `PASS` / `WARN` / `BLOCK`. | `skill-vetter` (track A) merged with a DSH-built plugin review (track B) |
+| [`init`](skills/init) | Scans a repository and creates or improves its project-root `AGENTS.md` from verified commands, architecture and conventions; leaves global instructions untouched. | OpenCode `/init` behaviour, DSH-native |
 
 ## Install
 
@@ -72,6 +73,7 @@ skills/
   reflect/              # review repeated work → smallest reusable asset
   grilling/             # design-tree interview for plans and decisions
   install-review/       # pre-install review of skills, plugins, npm packages
+  init/                 # initialize project AGENTS.md (/init)
 ZH/                     # Chinese docs; README.md is committed, AGENTS.md is local-only
 ```
 
@@ -85,6 +87,7 @@ git-ignored and is not part of this repository.
 - `grilling` is adapted from [Matt Pocock's skills](https://github.com/mattpocock/skills), MIT licensed.
 - `reflect` is adapted from [OMO Slim](https://github.com/alvinunreal/oh-my-opencode-slim), MIT licensed.
 - `install-review` merges the third-party `skill-vetter` skill with a DSH-built plugin review track; see [`skills/README.md`](skills/README.md) for provenance and license notes.
+- `init` ports the behaviour of OpenCode's `/init` command ([Rules → Initialize](https://opencode.ai/docs/rules#initialize)), MIT licensed; no upstream prompt text is copied.
 - Search behaviour and palette shape are inspired by dsh-claude-style's sidebar
   search and by OpenChamber's search surface.
 

@@ -1,10 +1,11 @@
 ---
 title: 实现 OpenCode 的 /init 命令（初始化项目 AGENTS.md）
-status: backlog
+status: done
 created: 2026-11-16
 last_reviewed: 2026-11-16
 owner: 我
-related: []
+related:
+  - skills/init/
 ---
 
 # 实现 OpenCode 的 /init 命令（初始化项目 AGENTS.md）
@@ -40,12 +41,13 @@ related: []
 - OpenChamber 侧只是把 `init` 列进命令面板（内置命令，描述
   “Create/update AGENTS.md file”），真正的执行由 OpenCode 负责。
 
-## DSH 实现方案（两个选项，倾向 A）
+## DSH 实现方案（已选 A）
 
-### A. 用户级技能（推荐，零插件）
+### A. 用户级技能（已实现）
 
-`~/.dsh/skills/init/SKILL.md`，用 `/init` 调用（DSH 技能默认
-`user-invocable: true`，会出现在 `/` 菜单）。技能正文规定：
+`<dshHome>/skills/init/SKILL.md`，用 `/init` 调用（DSH 技能默认
+`user-invocable: true`，会出现在 `/` 菜单；同名宿主命令优先，已核对无冲突）。
+技能正文规定：
 
 1. 先看仓库根：`package.json` / `pnpm-workspace.yaml` / `pyproject.toml` /
    `Cargo.toml` / `go.mod` / `Makefile` / CI 配置 / README / 现有 `AGENTS.md`
@@ -67,21 +69,36 @@ related: []
 `AGENTS.md`。适合以后要加 `--global`、`--force`、`--model` 等参数，或想和
 其他插件一起打包分发。
 
-## 待解决问题
+## 实现决策（原待解决问题）
 
-- 技能还是插件：`/init` 不需要参数、也不需要额外模型调用，技能就够；等确实
-  需要参数/统一分发时再升级成插件。
-- `/init` 是否会与将来 DSH 内置命令重名（当前已装包核对没有 `init` 命令；
-  DSH 的 `/name` 与宿主命令同名时优先解析为宿主命令）。
-- monorepo：先只写根 `AGENTS.md`；是否像 OpenCode 文档那样支持每包
-  `AGENTS.md`，后置。
-- 是否运行扫描到的 test/lint 命令：OpenCode 不强制；DSH 里建议只核实命令
-  存在，不要跑（跑测试可能很慢/有副作用）。
-- 语言：技能正文用英文还是中文；写进 `AGENTS.md` 的内容语言跟随仓库现有
-  文档语言，而不是跟随 UI 语言。
-- 与 `dsh-agent-instructions` 的 `CLAUDE.md` 兼容：已有 `CLAUDE.md` 时优先
-  引用，不重复内容。
+- **技能还是插件**：选技能。`/init` 不需要参数、不需要额外模型调用；等确实
+  需要参数或统一分发时再升级成插件（方案 B 保留作后续参考）。
+- **命令重名**：已核对当前安装包与 profile 插件，宿主命令只有
+  `compact` / `feedback` / `goal` / `permission` / `plan` / `export` 与
+  `summary`，没有 `init`；宿主命令优先的规则已知，若将来冲突再改名。
+- **monorepo**：只写项目根 `AGENTS.md`，正文里说明包布局；每包 `AGENTS.md`
+  只在用户明确要求时创建（DSH 在 agent 触达该目录后才加载）。
+- **是否运行扫描到的 test/lint 命令**：不运行；只核实命令在
+  manifest / Makefile / CI 中真实存在，核实不了就不写。
+- **语言**：技能正文用英文（仓库分发物约定）；写进 `AGENTS.md` 的内容语言
+  跟随目标仓库现有文档，而不是跟随 UI 语言。
+- **`CLAUDE.md` 兼容**：DSH 会原样加载 `CLAUDE.md`；因此只按路径引用、不复制
+  内容，内容相同的重复文件 DSH 也只渲染一次。
 
 ## 实现记录
 
 - 2026-11-16 —— 创建（方案阶段，尚未实现）。
+- 2026-11-16 —— 实现：新增用户级技能 [`skills/init/`](../skills/init)，按方案 A
+  落地 `/init`；安装方式仍是「把目录复制到 `<dshHome>/skills/`」，与技能安装
+  模型一致（技能不走 `plugin_manager` / link）。技能规定只写项目根
+  `AGENTS.md`、全局指令文件（`<dshHome>/AGENTS.md`、`~/.agents/AGENTS.md`、
+  `*.local.md`）列为禁止项、已有文件原地改进、命令不核实不写、不跑
+  build/test/lint、不提交。
+- 2026-11-16 —— 验证：`skill` 工具可加载该技能；在 git 忽略的
+  `<repo>/.tmp/init-smoke` 夹具中跑通一次生成，第二次运行无改动（幂等，文件
+  hash 不变）；`zh-doc-sync` 结构检查通过。首次跑测暴露的边界已补进技能正文：
+  无人类可问时走保守路径、指令文件与 manifest 冲突时以 manifest 为准、
+  `.env.example` 疑似真实密钥时只写变量名、`CLAUDE.md` 只有规则时 `Commands`
+  不算重复、报告里的 `git commit` 命令仅作提示不得执行。GUI 里正式 `/init`
+  需在**新会话**中人工确认 —— `/` 菜单的目录按会话缓存，新增 `SKILL.md` 不会
+  触发刷新事件（模型侧目录会经 watcher 更新）。
