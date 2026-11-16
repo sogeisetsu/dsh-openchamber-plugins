@@ -9,7 +9,7 @@
 
 这里的一切都还不稳定：API、布局和插件名都可能变化。
 
-中文文档：就是本文件。英文 `AGENTS.md` 的中文翻译 `ZH/AGENTS.md` 只在本地维护，
+中文文档：就是本文件。英文 `AGENTS.md` 的中文翻译 `ZH/AGENTS-zh.md` 只在本地维护，
 不提交到仓库。
 
 ## 插件
@@ -71,7 +71,7 @@ skills/
   grilling/             # design-tree interview for plans and decisions
   install-review/       # pre-install review of skills, plugins, npm packages
   init/                 # initialize project AGENTS.md (/init)
-ZH/                     # Chinese docs; README.md is committed, AGENTS.md is local-only
+ZH/                     # Chinese docs; README-zh.md is committed, AGENTS-zh.md is local-only
 ```
 
 `openchamber/` 是移植时使用的只读参考 checkout，已被 git 忽略，不属于本仓库。
