@@ -16,6 +16,7 @@
 
 | 插件 | 功能 | 状态 |
 | --- | --- | --- |
+| [`dsh-files-show-hidden`](../plugins/dsh-files-show-hidden) | 在右侧栏文件页的头部加一个眼睛开关；通过驱动文件浏览器自己的隐藏项设置来显示或隐藏以点开头的文件和文件夹，偏好仍由文件浏览器自己保存。 | 已交付 —— 打包安装 |
 | [`dsh-sidebar-search`](../plugins/dsh-sidebar-search) | 在侧边栏底部的 Settings 旁加一个搜索按钮；命令面板可搜会话消息内容、会话标题和项目，并提供快捷操作（新建会话、设置、插件）。 | 开发中 |
 | [`dsh-summary-command`](../plugins/dsh-summary-command) | 增加 `/summary [topic]` 斜杠命令，让当前会话产出一份非破坏性、可直接交接的摘要；提示词移植自 OpenChamber 的 `/summary` magic prompt。 | 已交付 —— 开发期 link 安装；打包安装待补 |
 
@@ -62,6 +63,7 @@ tarball。
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
 plugins/
+  dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
   dsh-sidebar-search/   # search trigger + palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
 skills/

@@ -1,0 +1,38 @@
+{
+  "name": "dsh-files-show-hidden",
+  "description": "Adds a hidden-files toggle to the right Sidebar's files page header by driving the file browser's own hidden-entry control.",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "icon": "icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "README.md",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "keywords": ["dsh", "deepseek-harness", "dsh-plugin", "files", "sidebar", "hidden-files"],
+  "license": "MIT",
+  "dsh": {
+    "engines": { "dsh": ">=0.2.2-rc.3" },
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-sidebar-files"
+      ]
+    }
+  }
+}

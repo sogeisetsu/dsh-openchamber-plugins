@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Files hidden-files toggle",
+    "description": "Adds an eye button to the files page header that shows or hides dotfiles and dot-directories in the workspace tree, using the file browser's own hidden-entry setting."
+  }
+}
