@@ -17,7 +17,7 @@
 | 插件 | 功能 | 状态 |
 | --- | --- | --- |
 | [`dsh-files-show-hidden`](../plugins/dsh-files-show-hidden) | 在右侧栏文件页的头部加一个眼睛开关；通过驱动文件浏览器自己的隐藏项设置来显示或隐藏以点开头的文件和文件夹，偏好仍由文件浏览器自己保存。 | 已交付 —— 打包安装 |
-| [`dsh-summary-command`](../plugins/dsh-summary-command) | 增加 `/summary [topic]` 斜杠命令，让当前会话产出一份非破坏性、可直接交接的摘要；提示词移植自 OpenChamber 的 `/summary` magic prompt。 | 已交付 —— 开发期 link 安装；打包安装待补 |
+| [`dsh-summary-command`](../plugins/dsh-summary-command) | 在输入框的斜杠菜单里加一行本地化的 `/summary [topic]`（图标、`总结` / `Summary`、说明文字），让当前会话产出一份非破坏性、可直接交接的摘要，且不动用户正在写的草稿；提示词移植自 OpenChamber 的 `/summary` magic prompt。 | 已交付 —— 打包安装 |
 
 ## 暂停的工作
 
@@ -73,7 +73,7 @@ tarball。
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
-  dsh-summary-command/  # /summary human command (host half)
+  dsh-summary-command/  # /summary slash-menu row (client half, host stub)
 archive/
   dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/

@@ -17,7 +17,7 @@ is not committed.
 | Plugin | What it does | Status |
 | --- | --- | --- |
 | [`dsh-files-show-hidden`](plugins/dsh-files-show-hidden) | Adds an eye toggle to the right Sidebar's files page header. It shows or hides dotfiles and dot-directories by invoking the file browser's own hidden-entry setting, so the browser keeps ownership of the preference. | delivered — packed install |
-| [`dsh-summary-command`](plugins/dsh-summary-command) | Adds a `/summary [topic]` slash command that asks the current session for a non-destructive, hand-off-ready summary. Prompt text ported from OpenChamber's `/summary` magic prompt. | delivered — dev-linked install; packed install pending |
+| [`dsh-summary-command`](plugins/dsh-summary-command) | Adds a localized `/summary [topic]` row to the composer's slash menu (icon, `总结` / `Summary`, description) that asks the current session for a non-destructive, hand-off-ready summary without touching the draft. Prompt text ported from OpenChamber's `/summary` magic prompt. | delivered — packed install |
 
 ## Paused work
 
@@ -78,7 +78,7 @@ Two behaviours worth knowing:
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
-  dsh-summary-command/  # /summary human command (host half)
+  dsh-summary-command/  # /summary slash-menu row (client half, host stub)
 archive/
   dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/

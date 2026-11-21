@@ -73,7 +73,7 @@ front matter 和表格中使用以下状态：
 | [`reflect-skill.md`](reflect-skill.md) | OMO Slim 的 reflect 技能：复盘→最小可复用改进，DSH 化后归档（含会话 miner 与作用域门槛）。 | `done` | 否 | 已交付 |
 | [`grilling-skill.md`](grilling-skill.md) | Matt Pocock 的 grilling 技能：设计树式追问评审，逐字移植归档。 | `done` | 否 | 已交付 |
 | [`install-review-skill.md`](install-review-skill.md) | 合并 skill-vetter 与自建插件审查的安装前审查技能（PASS/WARN/BLOCK，含离线扫描脚本）。 | `done` | 否 | 已交付 |
-| [`summary-command-plugin.md`](summary-command-plugin.md) | OpenChamber `/summary` 移植为 DSH 原生斜杠命令插件（`dsh-summary-command`）。 | `done` | 否 | 已交付（link 安装，打包安装待补） |
+| [`summary-command-plugin.md`](summary-command-plugin.md) | OpenChamber `/summary` 移植为斜杠菜单里的客户端命令行（`dsh-summary-command`，图标 + 中文标签，保留 `<topic>` 参数）。 | `done` | 否 | 已交付（tarball 打包安装） |
 
 新增想法时：
 

@@ -1,4 +1,6 @@
-# Insert this bundle's single Host row: the /summary human command plugin.
+# Insert this bundle's single row. The plugin is Client-only; the row exists so
+# the package enters the Web boot graph, and its Host half (`index.js`) is a
+# no-op.
 - insert:
     - id: summary-command
       name: 'dsh-summary-command'
