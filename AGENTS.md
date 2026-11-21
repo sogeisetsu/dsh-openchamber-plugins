@@ -21,8 +21,10 @@ into a plugin.
   zh-doc-sync/          # project-level skill: keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; one Markdown file per idea, README.md is the index
 plugins/
-  dsh-sidebar-search/   # sidebar search trigger + command palette (client half, host stub)
+  dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
+archive/
+  dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/
   reflect/              # user-level DSH skill: review repeated work → smallest reusable asset
   grilling/             # user-level DSH skill: design-tree interview for plans/decisions
@@ -84,6 +86,19 @@ lists provenance and DSH adaptations.
 - Keep the folder tracked by Git. Never add `todo/` to `.gitignore`.
 - Capture an idea in `todo/` only when asked. A recorded idea is not approval to
   implement it.
+
+## archive/ — paused work
+
+`archive/` keeps paused or abandoned work that is worth resuming. Nothing there
+is installed, released, or part of the plugin set.
+
+- Keep the bundle intact (`package.json`, implementation files, locales, icon)
+  so it can move back under `plugins/` when work resumes.
+- Remove or neutralise the part that caused the pause before archiving, and say
+  why in the entry's `README.md`.
+- Record the pause reason, the resume conditions, and anything unverified in the
+  entry's README or postmortem, and link the matching `todo/` entry.
+- Every archive entry has a row in [`archive/README.md`](archive/README.md).
 
 ## Install model — development vs release
 
@@ -196,10 +211,16 @@ Start from the DSH-generated docs and inspection, never from guesswork:
   and `en`).
 - Host half: `export function apply(ctx)`; register resources with
   `ctx.effect`/`ctx.on` and return their cleanup.
-- A bundle patch may insert rows and override another bundle's row by id (for
-  example `session-query-sqlite` → `openAt: first-search`). A patch replaces the
-  targeted row's whole `config`, so restate the keys it owns and write a comment
-  explaining why the override exists.
+- A bundle patch may insert this bundle's own rows. Do **not** override another
+  bundle's row from a plugin patch: the patch is re-composed on every install,
+  remove, enable and disable, so a flip can rebuild a long-initializing Host
+  service and take the whole app down. Put deployment-level overrides in the
+  profile's user patch (`~/.dsh/profiles/<profile>/cordis.patch.yml`), which is
+  applied last and does not change when a plugin is installed or removed. The
+  archived [`archive/dsh-sidebar-search/POSTMORTEM.md`](archive/dsh-sidebar-search/POSTMORTEM.md)
+  documents what this mistake cost. If you must target a row by id, a patch
+  replaces that row's whole `config`, so restate the keys it owns and write a
+  comment explaining why the override exists.
 - Never hand-write the DSH profile's `package.json` or `cordis.patch.yml`; use
   `plugin_manager` for install/enable/disable/remove.
 - Never append a new Session event type, and never require a specific
@@ -214,9 +235,9 @@ Start from the DSH-generated docs and inspection, never from guesswork:
 4. Live registration: confirm the Client slot occupants and Host rows through
    `cordis_inspect_query`, not by trusting the install result alone.
 5. Behaviour: exercise the feature in the running app, including the failure
-   path (for example: what the UI shows when the search index is disabled), and
-   report anything that stayed unverified — for example when no browser control
-   is available.
+   path (for example: what the UI shows when a Host dependency is unavailable),
+   and report anything that stayed unverified — for example when no browser
+   control is available.
 
 ## Conventions
 

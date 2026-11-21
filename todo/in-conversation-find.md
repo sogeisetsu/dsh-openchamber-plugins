@@ -2,9 +2,11 @@
 title: 会话内搜索：Ctrl+F 搜索当前对话并跳转到命中位置
 status: backlog
 created: 2026-11-15
-last_reviewed: 2026-11-15
+last_reviewed: 2026-11-21
 owner: 我
-related: []
+related:
+  - archive/dsh-sidebar-search/
+  - todo/sidebar-search.md
 ---
 
 # 会话内搜索：Ctrl+F 搜索当前对话并跳转到命中位置
@@ -55,9 +57,11 @@ related: []
 
 - DSH 目前没有会话内搜索。DSH 有全文索引：`ctx.sessionQuery.searchEvents(...)`
   （SQLite FTS5，事件级命中，带 `{sessionId, seq, type, time, surface,
-  snippet}`，支持字面短语、游标分页和表层/时间过滤）；`openAt` 可配，本仓库
-  `dsh-sidebar-search` 已把 `session-query-sqlite` 覆盖为 `openAt:
-  first-search`（见仓库 README）。
+  snippet}`，支持字面短语、游标分页和表层/时间过滤）；`openAt` 可配。已归档的
+  `dsh-sidebar-search` 曾在**插件补丁**里把 `session-query-sqlite` 覆盖为
+  `openAt: first-search`，结果因补丁随插件装卸翻转而打断宿主服务——这正是它
+  被暂停的原因；正确做法是把覆盖写到 profile 层，见
+  `archive/dsh-sidebar-search/POSTMORTEM.md`。
 - 两个关键差异：
   1. DSH 内置客户端 `sessions.search(query)` 只返回 `{ sessionId, snippet }`，
      **没有 message id / seq**——只能定位到会话，不能定位到消息，不能直接拿来做
@@ -72,16 +76,19 @@ related: []
     命中间滚动到元素、Esc 关闭。实现小、无 Host 依赖；缺点是只能搜已加载/
     已挂载的行（虚拟化或未加载的旧历史搜不到）。
   - **v2 接全文索引**：Host 侧加一条只读路由调用
-    `ctx.sessionQuery.searchEvents` 拿 seq + snippet（本仓库已有 HTTP 路由的
-    先例），client 显示命中列表；跳转需要把 seq 映射到已渲染的行——可以挂到
+    `ctx.sessionQuery.searchEvents` 拿 seq + snippet（本仓库目前没有现成的 HTTP
+    路由先例，需要新加），client 显示命中列表；跳转需要把 seq 映射到已渲染的
+    行——可以挂到
     消息行 slot 收集映射，或找官方「滚动到事件」API；找不到就退化成「按
     snippet 在已加载行里查找」。v2 能搜到未加载历史，但定位是最大未知。
 - 快捷键：DSH 有 `dsh-client-ui-shortcuts`（可注册快捷键、键位可配）；实现前
   用 `cordis_inspect_query` 查 Client `Slots` / 快捷键服务，确认能否注册一个
   Ctrl+F 且不与浏览器原生 find 冲突。只在该区域有焦点时接管，edit 框/侧栏/
   文件编辑器聚焦时不要抢。
-- 复用：本仓库 `dsh-sidebar-search` 已经打通了「client → Host 搜索」的通道，
-  v2 可以直接参考它的路由与错误处理。
+- 复用：归档的 `archive/dsh-sidebar-search` 已经打通了「client → Host 搜索」的
+  通道（插件本体已暂停），v2 可以直接参考它的 client 代码、i18n 与错误处理；
+  注意只复用实现，不要把它原来的插件补丁（覆盖别人的
+  `session-query-sqlite` 行）一起搬过来。
 - 入口：除了快捷键，可以再给一个「搜索本会话」按钮（侧栏/聊天头部），方便
   不知道快捷键的人。
 
@@ -103,7 +110,7 @@ related: []
   折叠块/工具卡片里时是否先展开。
 - 是否给开关（OpenChamber 搜索是 opt-in，索引不可用时提示 Not available）；
   i18n zh/en。
-- 与已有 `dsh-sidebar-search`（跨会话搜索）的关系：一个是全局搜索、一个是
+- 与已归档的 `dsh-sidebar-search`（跨会话搜索）的关系：一个是全局搜索、一个是
   当前会话内查找，入口和范围要区分清楚，避免用户混淆。
 
 ## 实现记录

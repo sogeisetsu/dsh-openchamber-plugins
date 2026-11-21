@@ -1,0 +1,19 @@
+# Insert this bundle's single row: the sidebar search Client plugin.
+#
+# The `session-query-sqlite` content-index override that this bundle used to
+# carry is deliberately gone. It belonged to the deployment, not to the plugin:
+# a plugin patch is re-composed on every install/remove/enable/disable, so the
+# override flipped the Host's index config and could rebuild the
+# `sessionController` service into a permanently unavailable state. See
+# POSTMORTEM.md in this directory.
+#
+# When resuming, put the override in the profile's own patch layer instead:
+#   ~/.dsh/profiles/<profile>/cordis.patch.yml
+#
+#   - id: session-query-sqlite
+#     config:
+#       path: ':memory:'
+#       openAt: first-search
+- insert:
+    - id: sidebar-search
+      name: 'dsh-sidebar-search'

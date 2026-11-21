@@ -1,6 +1,9 @@
 /**
  * dsh-sidebar-search — standalone sidebar search for the DeepSeek Harness Web UI.
  *
+ * ARCHIVED (paused 2026-11): the plugin is not installed. Read README.md and
+ * POSTMORTEM.md in this directory before moving it back under `plugins/`.
+ *
  * A search trigger beside Settings at the sidebar foot opens a command-palette
  * dialog (registered in the frame-wide `shell.overlay` layer) that searches:
  *

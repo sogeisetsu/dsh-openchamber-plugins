@@ -17,8 +17,15 @@ is not committed.
 | Plugin | What it does | Status |
 | --- | --- | --- |
 | [`dsh-files-show-hidden`](plugins/dsh-files-show-hidden) | Adds an eye toggle to the right Sidebar's files page header. It shows or hides dotfiles and dot-directories by invoking the file browser's own hidden-entry setting, so the browser keeps ownership of the preference. | delivered — packed install |
-| [`dsh-sidebar-search`](plugins/dsh-sidebar-search) | Adds a search button beside Settings at the sidebar foot. The palette searches session message content, session titles, and projects, and offers quick actions (new session, settings, plugins). | in development |
 | [`dsh-summary-command`](plugins/dsh-summary-command) | Adds a `/summary [topic]` slash command that asks the current session for a non-destructive, hand-off-ready summary. Prompt text ported from OpenChamber's `/summary` magic prompt. | delivered — dev-linked install; packed install pending |
+
+## Paused work
+
+[`dsh-sidebar-search`](archive/dsh-sidebar-search) is paused as of November 2026
+and is no longer installed. Its source is kept under [`archive/`](archive/),
+together with a [postmortem](archive/dsh-sidebar-search/POSTMORTEM.md) of the
+Host service outage that stopped it and the rules for resuming safely. The
+backlog entry is [`todo/sidebar-search.md`](todo/sidebar-search.md).
 
 ## Skills
 
@@ -57,9 +64,11 @@ Two behaviours worth knowing:
 - A `client.js` change appears after a page/window reload; a Host change
   (`index.js`) or a `cordis.patch.yml` change needs a DSH restart, because the
   bundle patch is composed at start-up.
-- `dsh-sidebar-search` overrides the `session-query-sqlite` row to
-  `openAt: first-search`. DSH ships that index closed for a quiet start-up, so
-  content search would otherwise be disabled.
+- A bundle patch is re-composed on every install, remove, enable and disable.
+  Never put a deployment-level override of another bundle's row in a plugin
+  patch — write it in the profile's own patch layer instead. The archived
+  [`dsh-sidebar-search`](archive/dsh-sidebar-search) shows what that coupling
+  can break.
 
 ## Layout
 
@@ -69,8 +78,9 @@ Two behaviours worth knowing:
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
-  dsh-sidebar-search/   # search trigger + palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
+archive/
+  dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/
   reflect/              # review repeated work → smallest reusable asset
   grilling/             # design-tree interview for plans and decisions
@@ -90,8 +100,8 @@ git-ignored and is not part of this repository.
 - `reflect` is adapted from [OMO Slim](https://github.com/alvinunreal/oh-my-opencode-slim), MIT licensed.
 - `install-review` merges the third-party `skill-vetter` skill with a DSH-built plugin review track; see [`skills/README.md`](skills/README.md) for provenance and license notes.
 - `init` ports the behaviour of OpenCode's `/init` command ([Rules → Initialize](https://opencode.ai/docs/rules#initialize)), MIT licensed; no upstream prompt text is copied.
-- Search behaviour and palette shape are inspired by dsh-claude-style's sidebar
-  search and by OpenChamber's search surface.
+- The archived sidebar search took its behaviour and palette shape from
+  dsh-claude-style's sidebar search and from OpenChamber's search surface.
 
 ## License
 
