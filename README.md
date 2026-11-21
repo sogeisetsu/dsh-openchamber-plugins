@@ -46,6 +46,14 @@ install step. [`zh-doc-sync`](.dsh/skills/zh-doc-sync) keeps the Chinese docs in
 | [`install-review`](skills/install-review) | Read-only pre-install review of a skill, DSH plugin, npm package, tarball or GitHub repo, ending in `PASS` / `WARN` / `BLOCK`. | `skill-vetter` (track A) merged with a DSH-built plugin review (track B) |
 | [`init`](skills/init) | Scans a repository and creates or improves its project-root `AGENTS.md` from verified commands, architecture and conventions; leaves global instructions untouched. | OpenCode `/init` behaviour, DSH-native |
 
+## Reference notes
+
+[`docs/dsh-slash-menu-rows.md`](docs/dsh-slash-menu-rows.md) — how a
+third-party command gets a first-party-looking row in the composer's `/` menu:
+why a Host `CommandDefinition` cannot carry a label or icon, the difference
+between a `commandUi` contribution and an own `inputTriggers` source, how the
+group order and the titleless-group trick work, and what each route costs.
+
 ## Install
 
 Requires DSH `>= 0.2.2-rc.1`.
@@ -76,6 +84,7 @@ Two behaviours worth knowing:
 .dsh/skills/
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
+docs/                   # reference notes on DSH internals
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
   dsh-summary-command/  # /summary slash-menu row (client half, host stub)

@@ -44,6 +44,13 @@ DSH 会自动发现变化，无需重启。
 | [`install-review`](../skills/install-review) | 安装前只读审查技能、DSH 插件、npm 包、tarball 或 GitHub 仓库，最终给出 `PASS` / `WARN` / `BLOCK`。 | `skill-vetter`（A 轨）与自建插件审查（B 轨）合并 |
 | [`init`](../skills/init) | 扫描仓库，用已核实的命令、架构与约定创建或改进项目根目录的 `AGENTS.md`；不碰全局指令文件。 | OpenCode `/init` 行为，DSH 原生实现 |
 
+## 参考笔记
+
+[`docs/dsh-slash-menu-rows.md`](../docs/dsh-slash-menu-rows.md)——第三方命令怎么
+在输入框的 `/` 菜单里拿到一行「看起来像官方」的呈现：为什么 Host 的
+`CommandDefinition` 带不了 label 和图标、`commandUi` 贡献行与自建
+`inputTriggers` 源的区别、分组顺序和无标题分组的手法，以及两种路线各自的代价。
+
 ## 安装
 
 需要 DSH `>= 0.2.2-rc.1`。
@@ -71,6 +78,7 @@ tarball。
 .dsh/skills/
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; see todo/README.md
+docs/                   # reference notes on DSH internals
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
   dsh-summary-command/  # /summary slash-menu row (client half, host stub)
