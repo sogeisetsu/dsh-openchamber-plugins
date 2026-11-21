@@ -1,6 +1,6 @@
 {
   "name": "dsh-sidebar-search",
-  "description": "Standalone sidebar search for DeepSeek Harness: a search button at the sidebar foot opens a quick dialog that finds sessions by message content (extracted from dsh-claude-style).",
+  "description": "ARCHIVED (paused 2026-11): standalone sidebar search for DeepSeek Harness. It is not installed; see README.md and POSTMORTEM.md before resuming.",
   "version": "1.0.0",
   "private": true,
   "type": "module",

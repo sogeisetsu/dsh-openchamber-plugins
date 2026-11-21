@@ -17,8 +17,15 @@
 | 插件 | 功能 | 状态 |
 | --- | --- | --- |
 | [`dsh-files-show-hidden`](../plugins/dsh-files-show-hidden) | 在右侧栏文件页的头部加一个眼睛开关；通过驱动文件浏览器自己的隐藏项设置来显示或隐藏以点开头的文件和文件夹，偏好仍由文件浏览器自己保存。 | 已交付 —— 打包安装 |
-| [`dsh-sidebar-search`](../plugins/dsh-sidebar-search) | 在侧边栏底部的 Settings 旁加一个搜索按钮；命令面板可搜会话消息内容、会话标题和项目，并提供快捷操作（新建会话、设置、插件）。 | 开发中 |
 | [`dsh-summary-command`](../plugins/dsh-summary-command) | 增加 `/summary [topic]` 斜杠命令，让当前会话产出一份非破坏性、可直接交接的摘要；提示词移植自 OpenChamber 的 `/summary` magic prompt。 | 已交付 —— 开发期 link 安装；打包安装待补 |
+
+## 暂停的工作
+
+[`dsh-sidebar-search`](../archive/dsh-sidebar-search) 已于 2026 年 11 月暂停，不再
+安装。它的源码保留在 [`archive/`](../archive/) 下，同目录还有一份
+[复盘报告](../archive/dsh-sidebar-search/POSTMORTEM.md)，记录导致暂停的宿主服务
+故障以及安全重启的规则。想法记录见
+[`todo/sidebar-search.md`](../todo/sidebar-search.md)。
 
 ## 技能
 
@@ -53,8 +60,10 @@ tarball。
 
 - `client.js` 的改动在页面/窗口重载后生效；Host 改动（`index.js`）或
   `cordis.patch.yml` 改动需要重启 DSH，因为 bundle patch 在启动时组装。
-- `dsh-sidebar-search` 把 `session-query-sqlite` 行覆盖为 `openAt: first-search`。
-  DSH 默认关闭该索引以获得安静的启动，不覆盖的话内容搜索不可用。
+- bundle patch 会在每次安装、移除、启用、停用时重新组装。不要把「覆盖别的
+  bundle 的行」这种部署级配置写进插件补丁 —— 写进 profile 自己的 patch 层。
+  已归档的 [`dsh-sidebar-search`](../archive/dsh-sidebar-search) 展示了这种耦合
+  能破坏什么。
 
 ## 目录结构
 
@@ -64,8 +73,9 @@ tarball。
 todo/                   # idea backlog; see todo/README.md
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
-  dsh-sidebar-search/   # search trigger + palette (client half, host stub)
   dsh-summary-command/  # /summary human command (host half)
+archive/
+  dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/
   reflect/              # review repeated work → smallest reusable asset
   grilling/             # design-tree interview for plans and decisions
@@ -85,8 +95,8 @@ ZH/                     # Chinese docs; README-zh.md is committed, AGENTS-zh.md 
 - `install-review` 合并了第三方 `skill-vetter` 技能与自建的插件审查流程；来源与
   许可说明见 [`skills/README.md`](../skills/README.md)。
 - `init` 移植了 OpenCode `/init` 命令的行为（[Rules → Initialize](https://opencode.ai/docs/rules#initialize)），MIT 许可；未复制上游提示词文本。
-- 搜索行为与命令面板形态参考了 dsh-claude-style 的侧栏搜索和 OpenChamber 的搜索
-  界面。
+- 已归档的侧栏搜索，其行为与命令面板形态参考了 dsh-claude-style 的侧栏搜索和
+  OpenChamber 的搜索界面。
 
 ## 许可
 

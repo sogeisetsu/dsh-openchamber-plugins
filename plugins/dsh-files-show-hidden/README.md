@@ -19,10 +19,9 @@ or storing a second setting.
 
 1. Open a Session whose workspace you want to browse.
 2. Open the files page in the right Sidebar (`workspace.files`).
-3. Press the eye button after the search toggle:
-   - the first press expands the search bar (so the browser's own eye is
-     visible) and turns hidden entries on;
-   - pressing it again turns them off.
+3. Press the eye button after the search toggle. The button drives the browser's
+   own eye for you and restores the search bar to the state it was in before the
+   press: a collapsed bar stays collapsed, and an open bar stays open.
 4. The choice persists per workspace root across reloads, because it is the file
    browser's own saved preference.
 
@@ -44,8 +43,9 @@ opener).
 
 - It looks up the page that owns the button (`[data-files-page]`), so two docked
   panes never drive each other.
-- It expands the search bar through `[data-files-search-toggle]` when needed and
-  then clicks `[data-files-show-hidden]`, waiting for the control to mount.
+- It expands the search bar through `[data-files-search-toggle]` only to reach
+  `[data-files-show-hidden]`, clicks the eye, and collapses the bar again when
+  it was the one that opened it.
 - It reads the pressed state from that control and, on first render, from the
   documented preference in browser storage
   (`dsh.sidebar-files.workspace-search.v1`). It **never writes** that value; the
@@ -62,8 +62,11 @@ opener).
   them makes the button take its unsupported path.
 - The pressed state can lag if another browser window changes the same
   preference; this mirrors the file browser's own multi-window limitation.
-- While the search bar stays open after the first press, that is deliberate: it
-  keeps the browser's own control and state visible.
+- The browser mounts its eye only while the search bar is open. When the bar
+  starts collapsed, the button opens it for the click and restores it in the
+  same task, forcing React to commit with `flushSync`, so no frame shows the open
+  bar. If a build does not expose `flushSync`, the fallback may show a brief
+  flash.
 
 ## Uninstall
 
