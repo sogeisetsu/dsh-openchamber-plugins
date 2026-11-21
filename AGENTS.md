@@ -20,9 +20,10 @@ into a plugin.
 .dsh/skills/
   zh-doc-sync/          # project-level skill: keep ZH/ translations in sync with English docs
 todo/                   # idea backlog; one Markdown file per idea, README.md is the index
+docs/                   # reference notes on DSH internals (slash menu, packaging traps)
 plugins/
   dsh-files-show-hidden/ # files-page hidden-entry toggle (client half, host stub)
-  dsh-summary-command/  # /summary human command (host half)
+  dsh-summary-command/  # /summary slash-menu row (client half, host stub)
 archive/
   dsh-sidebar-search/   # paused sidebar search; source + postmortem
 skills/
@@ -209,6 +210,11 @@ Start from the DSH-generated docs and inspection, never from guesswork:
   `ctx.slots.inject(slotKey, () => ctx.slots.register(...))`, and keep factories
   free of side effects. Localize visible text through `ctx.locale` (ship `zh`
   and `en`).
+- A command that should look like a built-in `/` command cannot get its label
+  or icon from a Host `CommandDefinition`: register a Client `/` trigger source
+  (or a `commandUi` contribution) instead. Group order, the titleless-group
+  trick, the argument trade-off and the migration checklist are in
+  [`docs/dsh-slash-menu-rows.md`](docs/dsh-slash-menu-rows.md).
 - Host half: `export function apply(ctx)`; register resources with
   `ctx.effect`/`ctx.on` and return their cleanup.
 - A bundle patch may insert this bundle's own rows. Do **not** override another
