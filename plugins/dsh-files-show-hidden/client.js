@@ -6,7 +6,8 @@
  * workspace root. The files page starts with that search bar collapsed, so the
  * control is easy to miss. This plugin adds a header button that toggles the
  * same setting by invoking the browser's own controls, which keeps one owner of
- * the preference and one persisted value.
+ * the preference and one persisted value. It restores the search bar's previous
+ * open state, so pressing the eye never leaves the bar open just to reach it.
  *
  * The plugin reads the documented preference only to show its pressed state; it
  * never writes that value itself. If a future DSH release renames the browser's
@@ -21,6 +22,16 @@ window.__ModuleLoader__.load({
 	factory(require) {
 		const React = require("react");
 		const h = React.createElement;
+
+		// React's synchronous flush commits the transient open/close before the
+		// next paint, so the search bar never shows while the eye is reached.
+		let flushSync = null;
+		try {
+			const reactDom = require("react-dom");
+			if (reactDom && typeof reactDom.flushSync === "function") flushSync = reactDom.flushSync;
+		} catch {
+			// A composition without react-dom keeps the polling fallback.
+		}
 
 		const NS = "filesShowHidden";
 		const STYLE_SCOPE = "dsh-files-show-hidden";
@@ -119,6 +130,20 @@ window.__ModuleLoader__.load({
 				await sleep(stepMs);
 			}
 			return null;
+		}
+
+		/** Click a built-in control and commit its React update before returning. */
+		function clickFlushed(element) {
+			if (!element || typeof element.click !== "function") return;
+			if (flushSync === null) {
+				element.click();
+				return;
+			}
+			try {
+				flushSync(() => { element.click(); });
+			} catch {
+				// The click already ran; React still applies the queued update.
+			}
 		}
 
 		// ---------------------------------------------------------------------------
@@ -235,6 +260,14 @@ window.__ModuleLoader__.load({
 				}
 			};
 
+			/**
+			 * Toggle the browser's own hidden-entry setting without changing the
+			 * search bar's open state. The browser mounts its eye only while the
+			 * bar is open, so a collapsed bar opens for the click and is closed
+			 * again in the same task; both steps are flushed before the next
+			 * paint, so the bar never appears. A bar that was already open stays
+			 * open.
+			 */
 			const toggle = async () => {
 				if (busyRef.current) return;
 				const button = buttonRef.current;
@@ -246,16 +279,18 @@ window.__ModuleLoader__.load({
 				busyRef.current = true;
 				try {
 					const searchToggle = scope.querySelector(SEARCH_TOGGLE_SELECTOR);
-					if (searchToggle && searchToggle.getAttribute("aria-expanded") !== "true" && typeof searchToggle.click === "function") {
-						searchToggle.click();
-					}
-					const eye = await waitFor(scope, HIDDEN_TOGGLE_SELECTOR, 24, 25);
+					const barWasOpen = searchToggle?.getAttribute("aria-expanded") === "true";
+					if (!barWasOpen) clickFlushed(searchToggle);
+					let eye = scope.querySelector(HIDDEN_TOGGLE_SELECTOR);
+					if (eye === null) eye = await waitFor(scope, HIDDEN_TOGGLE_SELECTOR, 24, 25);
 					if (!eye) {
+						if (!barWasOpen) clickFlushed(searchToggle);
 						fail();
 						return;
 					}
 					const wasShown = eye.getAttribute("aria-pressed") === "true";
 					if (typeof eye.click === "function") eye.click();
+					if (!barWasOpen) clickFlushed(searchToggle);
 					if (!aliveRef.current) return;
 					setShowHidden(!wasShown);
 					setUnsupported(false);

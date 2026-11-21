@@ -1,7 +1,7 @@
 {
   "name": "dsh-files-show-hidden",
   "description": "Adds a hidden-files toggle to the right Sidebar's files page header by driving the file browser's own hidden-entry control.",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": true,
   "type": "module",
   "main": "index.js",
