@@ -2,7 +2,7 @@
 title: /summary 斜杠命令插件（OpenChamber summary magic prompt）
 status: done
 created: 2026-11-15
-last_reviewed: 2026-11-15
+last_reviewed: 2026-11-21
 owner: 我
 related:
   - plugins/dsh-summary-command/
@@ -35,36 +35,64 @@ related:
     技术决策 + 格式要求）；
   - 连 `{{topic_block}}` 占位与它的替换逻辑都保留。
 - 为 DSH 改的部分：
-  - 从「前端组装 prompt 注入」改为 **DSH 原生斜杠命令**：用
-    `ctx.commands.register` 注册 `/summary [topic]`；
-  - 用 `agent.followup()` 把「可见请求 + 隐藏指令」作为**一条用户消息**投回
-    当前会话：空闲 agent 会被唤醒，运行中则排队在当前轮之后；
-  - 输入带附件时拒绝并给出 usage 提示；
+  - 从「前端组装 prompt 注入」改为 **输入框斜杠菜单里的一行命令**：用
+    `ctx.inputTriggers.registerSource` 注册 `/summary [topic]` 的 claim，
+    `submit(args)` 走会话自己的 `session.prompt()`；
+  - 用一条「可见请求 + 隐藏指令」的用户消息投回当前会话，不碰用户草稿与附件；
+  - 输入带附件时拒绝并给出提示；
   - 中英文案（`locale/zh.json` + `locale/en.json`）与插件图标/清单齐全。
+
+## 为什么改成客户端注册（2026-11-21）
+
+菜单里官方那四行的图标和中文**不属于命令本身**：`@deepseek-ai/dsh-commands`
+的 `CommandDefinition` 只有 `name` / `description` / `input`，而
+`dsh-client-ui-commands` 用一张写死的 `HOST_FACES`（按 `definitionId` 匹配
+`compact` / `permission` / `model` / `export` 等六个内置命令）才给出
+`label`、`description` 和图标。所以走 Host 注册的第三方命令永远是英文名 +
+英文描述 + 无图标。
+
+第三方可用的补位入口有两个：`ctx.commandUi.register`（贡献行）与自建 `/`
+触发器（`ctx.inputTriggers.registerSource`）。前者只接裸调用，会让
+`/summary <主题>` 失效；本项目要保留主题参数，因此选自建触发器
+（`dsh-btw` 是同一种做法的现成先例）。代价是 Host 命令撤掉，`/summary`
+只存在于 Web/Desktop 会话。
 
 ## 实现位置
 
-- 仓库：`plugins/dsh-summary-command/`（`index.js`、`package.json`、
-  `cordis.patch.yml`、`locale/zh.json`、`locale/en.json`、`icon.svg`）。
-- 本机安装：desktop profile 的 `node_modules/dsh-summary-command` 是
-  **junction（开发期 link）**，指向本仓库该目录；profile 的 `package.json` 里
-  记录为指向本仓库 `plugins/dsh-summary-command/` 的 `link:` 依赖。
+- 仓库：`plugins/dsh-summary-command/`（`client.js`、`index.js`、`package.json`、
+  `cordis.patch.yml`、`README.md`、`locale/zh.json`、`locale/en.json`、`icon.svg`）。
+- 本机安装：desktop profile 里记录为打包依赖
+  `file:<repo>/.tmp/packs/dsh-summary-command-2.0.0.tgz`，
+  `node_modules/dsh-summary-command` 是真实解包目录（不是 junction）。
 
 ## 验证
 
-- `node --check index.js` 通过；`package.json` 与两份 locale JSON 解析通过。
-- `cordis.patch.yml` 只插入一条 Host 行（`summary-command`），注释说明了用途。
-- 本机安装副本与本仓库 `index.js` 的 SHA-256 一致（link 安装，读的是同一份文件）。
-- 用户已在本机 DSH 中安装并确认可用。
+- `node --check client.js`、`node --check index.js` 通过；`package.json` 与两份
+  locale JSON 解析通过。
+- `cordis.patch.yml` 只插入一条 Host 行（`summary-command`），Host 半边是空壳
+  `apply()`，仅用于让包进入 Web 启动图。
+- 隔离 `DSH_HOME` + `dsh web` + bsk 截图验收：`/` 菜单里该行紧跟在
+  「下载日志 export」之后、「技能」之前，图标、`总结 summary`、右对齐中文说明
+  与官方四行一致（截图存 `.tmp/menu-3.png`）。
+- 参数路径实测：`/summary handoff` 投出
+  "Summarize this session, focused on: handoff."；裸 `/summary` 投出
+  "Summarize this session."，`{{topic_block}}` 为空时无残留。隔离环境无 API Key，
+  模型调用按预期报 `MISSING_CREDENTIAL`（不是插件问题）。
+- 安装形态三项核对通过：依赖是 `file:` tarball、`node_modules` 条目 `LinkType`
+  为空、bundle 列表包含该插件。
 
 ## 遗留
 
-- 按本仓库 AGENTS.md 的安装模型：完成的功能必须用**打包后的 tarball** 做真正
-  安装（`pnpm pack` → `install_bundle`），不能停留在开发期 `link:`。当前是
-  link 安装，发布安装与重新验收待补。
-- 插件目录内没有 README；仓库根 README 的 Plugins 表已有该插件的说明。
+- 附件拒绝分支只有代码路径，未在预览里实测（claim 未声明 `attachments: true`，
+  带附件的提交会在分发前被组合器拒绝）。
+- 英文界面下的行文案未单独截图验证（走的是同一套 `ctx.locale` 绑定）。
+- 由于不再是 Host 命令，CLI 等没有客户端模块的表面无法使用 `/summary`。
 
 ## 实现记录
 
 - 2026-11-15 —— 确认实现位于 `plugins/dsh-summary-command/`，本机以 link 方式
   安装于 desktop profile；归档并记录为已完成（打包安装为遗留项）。
+- 2026-11-21 —— 2.0.0：为对齐官方命令行的呈现（图标 + 中文标签 + 中文说明），
+  把 `/summary` 从 Host 命令改成客户端 `/` 触发器（保留 `<topic>` 参数，提交走
+  `session.prompt()`，不动草稿）；补 `client.js` 与插件 README；`pnpm pack`
+  后按发布流程用 tarball 真正安装，替换开发期 link。
