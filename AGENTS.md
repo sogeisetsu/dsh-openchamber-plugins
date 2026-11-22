@@ -175,23 +175,36 @@ Never work directly on `main`. Every task starts from a branch of the current
 
 ### Git remote and authentication
 
-This repository is often worked on from inside the DSH agent sandbox, which
-cannot read an SSH key and has no running SSH agent. A `ssh://` origin therefore
-hangs on `git fetch` and `git push`, then fails with `Permission denied
-(publickey)`. Keep `origin` on the HTTPS URL of the upstream repository and let
-a credential helper supply the token — `gh auth git-credential` when the `gh`
-CLI is signed in, otherwise whatever helper the machine already uses:
+Work in this repository often happens inside the DSH agent sandbox, and two
+sandbox properties shape the Git setup:
+
+- SSH does not work there: no readable SSH key and no running SSH agent, so an
+  `ssh://` origin hangs on `git fetch` and `git push`, then fails with
+  `Permission denied (publickey)`.
+- No credential helper runs there either: a helper is a child process that talks
+  to Git over pipes, and the sandbox refuses to create them (`sh.exe: couldn't
+  create signal pipe`). Do not spend a run on `gh auth git-credential` or a GUI
+  helper — no token comes back.
+
+So keep `origin` on the HTTPS URL of the upstream repository, put the token into
+that URL for the single push, and run it through the DSH `git` tool:
 
 ```sh
-git remote -v                                  # expect https://, not ssh://
+# 1. credentials in the remote URL, for this push only
+git remote set-url origin "https://<token-user>:<token>@<host>/<owner>/<repo>.git"
+# 2. push through the git tool; add a local proxy only when direct access is blocked
+git -c http.proxy=<local-mixed-proxy> push origin main
+# 3. restore the clean URL
 git remote set-url origin "https://<host>/<owner>/<repo>.git"
-git fetch origin
 ```
 
-Do not work around this by copying keys or writing credentials into the
-workspace: no key, token, account name or machine path belongs in this
-repository. If a push failed or was done through an explicit URL, say so in the
-report.
+In a normal terminal, outside the sandbox, helpers work and the URL stays clean;
+only use the embedded form when the helper route is unavailable. Never leave the
+token in `.git/config`, in a tracked file, in a log, or in the report. A
+temporary credential file may live in `.tmp/` (git-ignored) and is deleted as
+soon as the push ends. A shell `git` inside the sandbox additionally needs
+`http.sslBackend=openssl`, so prefer the `git` tool. If a push failed or was
+done through an explicit URL, say so in the report.
 
 ## Chinese documentation
 
