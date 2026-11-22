@@ -173,6 +173,26 @@ Never work directly on `main`. Every task starts from a branch of the current
 6. Do not commit or push unless the task asked for it. Never run
    `git reset --hard`, `git clean -fd`, or force-push.
 
+### Git remote and authentication
+
+This repository is often worked on from inside the DSH agent sandbox, which
+cannot read an SSH key and has no running SSH agent. A `ssh://` origin therefore
+hangs on `git fetch` and `git push`, then fails with `Permission denied
+(publickey)`. Keep `origin` on the HTTPS URL of the upstream repository and let
+a credential helper supply the token — `gh auth git-credential` when the `gh`
+CLI is signed in, otherwise whatever helper the machine already uses:
+
+```sh
+git remote -v                                  # expect https://, not ssh://
+git remote set-url origin "https://<host>/<owner>/<repo>.git"
+git fetch origin
+```
+
+Do not work around this by copying keys or writing credentials into the
+workspace: no key, token, account name or machine path belongs in this
+repository. If a push failed or was done through an explicit URL, say so in the
+report.
+
 ## Chinese documentation
 
 English `README.md` and `AGENTS.md` are the source of truth. Their Chinese
