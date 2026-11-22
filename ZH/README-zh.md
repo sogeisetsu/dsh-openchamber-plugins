@@ -35,7 +35,9 @@ DSH 会自动发现变化，无需重启。
 
 项目级技能放在 [`.dsh/skills/`](../.dsh/skills/)：随仓库一起提交，在 rank 100
 被发现，因此不需要安装步骤。[`zh-doc-sync`](../.dsh/skills/zh-doc-sync) 负责让
-`ZH/` 里的中文文档与英文源保持一致。
+`ZH/` 里的中文文档与英文源保持一致；
+[`plugin-name-audit`](../.dsh/skills/plugin-name-audit) 把 `plugins/` 下的 bundle
+名称对照社区里流行的插件核对一遍，避免新插件用上社区已经占用的名字。
 
 | 技能 | 功能 | 来源 |
 | --- | --- | --- |
@@ -77,6 +79,7 @@ tarball。
 ```
 .dsh/skills/
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
+  plugin-name-audit/    # flag plugin names that collide with popular community plugins
 todo/                   # idea backlog; see todo/README.md
 docs/                   # reference notes on DSH internals
 plugins/

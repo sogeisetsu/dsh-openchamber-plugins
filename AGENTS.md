@@ -19,6 +19,7 @@ into a plugin.
 ```
 .dsh/skills/
   zh-doc-sync/          # project-level skill: keep ZH/ translations in sync with English docs
+  plugin-name-audit/    # project-level skill: flag plugin names that collide with popular community plugins
 todo/                   # idea backlog; one Markdown file per idea, README.md is the index
 docs/                   # reference notes on DSH internals (slash menu, packaging traps)
 plugins/
@@ -193,6 +194,18 @@ translations live in `ZH/`:
   not distributed. The sync skill recreates it from English when it is missing.
 
 ## Developing a plugin
+
+**Name it before you build it.** A bundle's `package.json` `name`, its
+`plugins/<dir>` directory, and the label users read in the Plugin Manager are
+how people find it, and the agent-plugin ecosystem already has popular bundles
+for most ideas. Before a bundle gets a name, run the project skill
+`.dsh/skills/plugin-name-audit` and check the candidates against what is popular
+right now (OpenChamber/OpenCode, OMO Slim, the Claude Code plugin markets, the
+`@deepseek-ai/dsh-*` npm scope, GitHub, npm). If a known bundle already owns the
+name — or users would confuse the two — pick another one: a scope prefix does
+not disambiguate a bare name people still type and search for. Prefer
+`dsh-<specific-feature>`, which matches the existing bundles and stays distinct
+from a community bundle that solves the same problem.
 
 Start from the DSH-generated docs and inspection, never from guesswork:
 
