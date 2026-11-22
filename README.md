@@ -37,7 +37,10 @@ without a restart.
 Project-level skills live under [`.dsh/skills/`](.dsh/skills/): they are
 committed with the repository and discovered at rank 100, so they need no
 install step. [`zh-doc-sync`](.dsh/skills/zh-doc-sync) keeps the Chinese docs in
-`ZH/` aligned with their English sources.
+`ZH/` aligned with their English sources, and
+[`plugin-name-audit`](.dsh/skills/plugin-name-audit) checks the bundles under
+`plugins/` against the plugin bundles that are popular in the agent ecosystem,
+so a new plugin does not ship under a name the community already owns.
 
 | Skill | What it does | Origin |
 | --- | --- | --- |
@@ -83,6 +86,7 @@ Two behaviours worth knowing:
 ```
 .dsh/skills/
   zh-doc-sync/          # keep ZH/ translations in sync with English docs
+  plugin-name-audit/    # flag plugin names that collide with popular community plugins
 todo/                   # idea backlog; see todo/README.md
 docs/                   # reference notes on DSH internals
 plugins/
